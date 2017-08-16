@@ -2,15 +2,22 @@ package com.miracle.libs;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ListView;
+import android.view.View;
 import android.widget.TextView;
 
-import com.miracle.libs.utils.AndroidVersionsUtils;
-import com.miracle.libs.utils.AppApplicationMgr;
+import com.miracle.libs.bean.JianshuBean;
 import com.miracle.libs.utils.AppCharacterParser;
 import com.miracle.libs.utils.AppFileMgr;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Create with Android studio
@@ -20,21 +27,25 @@ import com.miracle.libs.utils.AppFileMgr;
  * @time: 12:04
  * @age: 24
  */
-public class TestActivity extends Activity {
+public class MiRacleActivity extends Activity {
 
-    private static final String TAG = "TestActivity";
+    private static final String TAG = "MiRacleActivity";
 
-    String string = "向";
+    String str = "向";
     TextView testView;
+    Document document;
+    private List<JianshuBean> mList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        String result = AppCharacterParser.getInstace().getSelling(string);
-        Log.i(TAG, "----->>string: " + string);
+        String result = AppCharacterParser.getInstace().getSelling(str);
+        Log.i(TAG, "----->>str: " + str);
         testView = (TextView) findViewById(R.id.test_view);
 
         testView.setText(AppFileMgr.getSdCardSize() + "");
+        mList = new ArrayList<>();
+
     }
 }

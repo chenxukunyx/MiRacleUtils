@@ -9,13 +9,16 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.miracle.libs.TestActivity">
+        <activity android:name="com.miracle.libs.ui.jianshu.JianshuActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.HOME"/>
             </intent-filter>
         </activity>
+
+        <activity android:name="com.miracle.libs.ui.jianshu.DetailActivity"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>

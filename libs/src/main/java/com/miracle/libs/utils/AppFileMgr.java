@@ -762,8 +762,8 @@ public class AppFileMgr {
      *					File desc = new File("F://AAA//s2sh.jpg");  需要复制文件路径
      *					falg = CopeFile(src, desc);					返回复制成功与失败状态(测试通过)
      * 目录复制形式1：
-     * 					File src = new File("F://TestActivity");     		源文件目录路径
-     *  				File desc = new File("F://AAA//TestActivity");		复制目录下全路径
+     * 					File src = new File("F://MiRacleActivity");     		源文件目录路径
+     *  				File desc = new File("F://AAA//MiRacleActivity");		复制目录下全路径
      *					falg = CopeFile(src, desc);                 返回复制成功与失败状态(测试通过)
      * @param src  源文件的全路径
      * @param desc 复制文件路径

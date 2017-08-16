@@ -42,7 +42,7 @@ public class MiRacleApplication extends Application {
     public void onCreate() {
         super.onCreate();
 //        init();
-//        getSign();
+        getSign();
     }
 
 //    protected void init() {
@@ -60,7 +60,7 @@ public class MiRacleApplication extends Application {
 
     public String getSign(){
         StringBuilder sign = new StringBuilder();
-        sign.append("a=").append(appid).append("&b=").append(bucket).append("&k=").append(secretID)
+        sign.append("a=").append("1254172882").append("&b=").append("memory").append("&k=").append(secretID)
                 .append("&e=1437995704&t=").append(System.currentTimeMillis()).append("&r=2081660421").append("&f=");
 
         String signTmp = HmacSHA1Encrypt(secretKey, sign.toString());
