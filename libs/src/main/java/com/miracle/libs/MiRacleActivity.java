@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.miracle.libs.bean.JianshuBean;
 import com.miracle.libs.utils.AppCharacterParser;
 import com.miracle.libs.utils.AppFileMgr;
+import com.miracle.libs.view.SuccessFailView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,7 +29,7 @@ import java.util.List;
  * @time: 12:04
  * @age: 24
  */
-public class MiRacleActivity extends Activity {
+public class MiRacleActivity extends Activity implements View.OnClickListener{
 
     private static final String TAG = "MiRacleActivity";
 
@@ -35,6 +37,8 @@ public class MiRacleActivity extends Activity {
     TextView testView;
     Document document;
     private List<JianshuBean> mList;
+    private SuccessFailView successFailView;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,5 +51,16 @@ public class MiRacleActivity extends Activity {
         testView.setText(AppFileMgr.getSdCardSize() + "");
         mList = new ArrayList<>();
 
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(this);
+        successFailView = (SuccessFailView) findViewById(R.id.successfail_view);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.button) {
+            successFailView.loadingStatus();
+        }
     }
 }
