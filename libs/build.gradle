@@ -45,4 +45,5 @@ dependencies {
 
     compile 'org.jsoup:jsoup:1.9.2'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.8.0'
+    compile 'com.tencent.sonic:sdk:1.0.0'
 }

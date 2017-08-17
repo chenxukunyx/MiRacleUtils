@@ -1,8 +1,12 @@
 package com.miracle.libs.ui.jianshu;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,12 +18,16 @@ import com.miracle.libs.R;
 import com.miracle.libs.adapter.JianshuAdapter;
 import com.miracle.libs.bean.JianshuBean;
 import com.miracle.libs.utils.AppActivitySkipUtil;
-import com.scwang.smartrefresh.header.CircleHeader;
+import com.miracle.libs.utils.MLog;
+import com.miracle.libs.vassonic.BrowserActivity;
+import com.miracle.libs.vassonic.SonicRuntimeImpl;
 import com.scwang.smartrefresh.header.CircleRefreshHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
+import com.tencent.sonic.sdk.SonicConfig;
+import com.tencent.sonic.sdk.SonicEngine;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -41,7 +49,7 @@ import java.util.Map;
  * @time: 13:58
  * @age: 24
  */
-public class JianshuActivity extends Activity implements OnRefreshListener, OnRefreshLoadmoreListener {
+public class JianshuActivity extends Activity implements OnRefreshListener, OnRefreshLoadmoreListener{
 
     private static final String TAG = "JianshuActivity";
     private SmartRefreshLayout refreshLayout;
@@ -49,6 +57,14 @@ public class JianshuActivity extends Activity implements OnRefreshListener, OnRe
     Document document;
     private List<JianshuBean> been;
     private JianshuAdapter mAdapter;
+
+    public static final int MODE_DEFAULT = 0;
+
+    public static final int MODE_SONIC = 1;
+
+    public static final int MODE_SONIC_WITH_OFFLINE_CACHE = 2;
+
+    private static final int PERMISSION_REQUEST_CODE_STORAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,20 +91,89 @@ public class JianshuActivity extends Activity implements OnRefreshListener, OnRe
             public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 int i = view.getId();
                 if (i == R.id.iv_primary || i == R.id.tv_title || i == R.id.tv_content) {
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put("link", been.get(position).getTitleLink());
-                    AppActivitySkipUtil.skipAnotherActivity(JianshuActivity.this, DetailActivity.class, (HashMap<String, ? extends Object>) map);
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put(BrowserActivity.PARAM_URL, been.get(position).getTitleLink());
+                    map.put(BrowserActivity.PARAM_MODE, MODE_SONIC);
+                    AppActivitySkipUtil.skipAnotherActivity(JianshuActivity.this, DetailActivity.class, (HashMap<String, Object>) map);
+//                    startBrowserActivity(been.get(position).getTitleLink(), MODE_SONIC);
                 } else if (i == R.id.tv_author || i == R.id.iv_avatar) {
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put("link", been.get(position).getAuthorLink());
-                    AppActivitySkipUtil.skipAnotherActivity(JianshuActivity.this, DetailActivity.class, (HashMap<String, ? extends Object>) map);
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put(BrowserActivity.PARAM_MODE, MODE_SONIC);
+                    map.put(BrowserActivity.PARAM_URL, been.get(position).getAuthorLink());
+                    AppActivitySkipUtil.skipAnotherActivity(JianshuActivity.this, DetailActivity.class, (HashMap<String, Object>) map);
+//                    startBrowserActivity(been.get(position).getAuthorLink(), MODE_SONIC);
                 } else if (i == R.id.tv_collectTag) {
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put("link", been.get(position).getCollectionTagLink());
-                    AppActivitySkipUtil.skipAnotherActivity(JianshuActivity.this, DetailActivity.class, (HashMap<String, ? extends Object>) map);
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put(BrowserActivity.PARAM_URL, been.get(position).getCollectionTagLink());
+                    map.put(BrowserActivity.PARAM_MODE, MODE_SONIC);
+                    AppActivitySkipUtil.skipAnotherActivity(JianshuActivity.this, BrowserActivity.class, (HashMap<String, Object>) map);
+//                    startBrowserActivity(been.get(position).getCollectionTagLink(), MODE_SONIC);
                 }
             }
         });
+
+        if (hasPermission()) {
+            init();
+        } else {
+            requestPermission();
+        }
+    }
+
+    private void init() {
+        // init sonic engine
+        if (!SonicEngine.isGetInstanceAllowed()) {
+            SonicEngine.createInstance(new SonicRuntimeImpl(getApplication()), new SonicConfig.Builder().build());
+        }
+    }
+
+
+    private boolean hasPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        }
+        return true;
+    }
+
+    private void requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE_STORAGE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (PERMISSION_REQUEST_CODE_STORAGE == requestCode) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                requestPermission();
+            } else {
+                init();
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onLoadmore(RefreshLayout refreshlayout) {
+        refreshlayout.finishLoadmore(1000);
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshlayout) {
+        getJianshuData();
+    }
+
+    private String timeFormat(String time) {
+        String[] t = time.split("T");
+        String[] s = t[1].split("\\+");
+        return t[0] + "   " + s[0];
+    }
+
+    private void startBrowserActivity(String url, int mode) {
+        Intent intent = new Intent(JianshuActivity.this, BrowserActivity.class);
+        intent.putExtra(BrowserActivity.PARAM_URL, url);
+        intent.putExtra(BrowserActivity.PARAM_MODE, mode);
+        startActivityForResult(intent, -1);
     }
 
     private void getJianshuData() {
@@ -150,33 +235,4 @@ public class JianshuActivity extends Activity implements OnRefreshListener, OnRe
         }).start();
     }
 
-    @Override
-    public void onLoadmore(RefreshLayout refreshlayout) {
-        refreshlayout.finishLoadmore(1000);
-    }
-
-    @Override
-    public void onRefresh(RefreshLayout refreshlayout) {
-        getJianshuData();
-    }
-
-    private String timeFormat(String time) {
-        String[] t = time.split("T");
-        String[] s = t[1].split("\\+");
-        return t[0] + "   " + s[0];
-    }
-
-//    @Override
-//    public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-//        switch (view.getId()) {
-//            case R.id.tv_title:
-//            case R.id.tv_content:
-//            case R.id.iv_primary:
-////                Intent title = new Intent(JianshuActivity.this, DetailActivity.class);
-////                title.putExtra("title", been.get(position).getTitleLink());
-//                AppActivitySkipUtil.skipAnotherActivity(JianshuActivity.this, DetailActivity.class,
-//                        new HashMap<String, Object>().put("title", been.get(position).getTitleLink()));
-//                break;
-//        }
-//    }
 }
