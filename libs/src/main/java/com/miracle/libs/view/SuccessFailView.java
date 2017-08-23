@@ -1,5 +1,6 @@
 package com.miracle.libs.view;
 
+import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,6 +15,7 @@ import android.util.TypedValue;
 import android.view.View;
 
 import com.miracle.libs.R;
+import com.miracle.libs.utils.MLog;
 
 /**
  * Created with Android Studio
@@ -23,7 +25,7 @@ import com.miracle.libs.R;
  * @time: 下午9:49
  */
 
-public class SuccessFailView extends View implements ValueAnimator.AnimatorUpdateListener {
+public class SuccessFailView extends View {
 
     private Context mContext;
     private static final int DEFAULT_PROGRESS_COLOR = Color.parseColor("#3F51B5");
@@ -32,8 +34,8 @@ public class SuccessFailView extends View implements ValueAnimator.AnimatorUpdat
     private static final float DEFAULT_PROGRESS_WIDTH = 6f;
     private static final float DEFAULT_PROGRESS_RADIUS = 100f;
 
-    private int mProgressColor;
-    private int mSuccessColor;
+    private int mProgressColor;//loading颜色
+    private int mSuccessColor;//success颜色
     private int mFailureColor;
     private float mProgressWidth;
     private float mProgressRadius;
@@ -109,13 +111,14 @@ public class SuccessFailView extends View implements ValueAnimator.AnimatorUpdat
 
     private void initAnim() {
         circleAnimator = ValueAnimator.ofFloat(0, 1);
-        circleAnimator.addUpdateListener(this);
-    }
-
-    @Override
-    public void onAnimationUpdate(ValueAnimator valueAnimator) {
-        circleValue = (float) valueAnimator.getAnimatedValue();
-        invalidate();
+        circleAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                circleValue = (float) animation.getAnimatedValue();
+                MLog.i("circleValue" + circleValue);
+                invalidate();
+            }
+        });
     }
 
     @Override
@@ -127,14 +130,14 @@ public class SuccessFailView extends View implements ValueAnimator.AnimatorUpdat
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         if (widthMode == MeasureSpec.EXACTLY) {
-            width = widthSize;
+            width = (int) (widthSize + mProgressWidth);
         } else {
-            width = (int) (2 * mProgressRadius +  2 * mProgressWidth + getPaddingLeft() + getPaddingRight());
+            width = (int) (2 * mProgressRadius +  3 * mProgressWidth + getPaddingLeft() + getPaddingRight());
         }
         if (heightMode == MeasureSpec.EXACTLY) {
-            height = heightSize;
+            height = (int) (heightSize + mProgressWidth);
         } else {
-            height = (int) (2 * mProgressRadius + 2 * mProgressWidth + getPaddingTop() + getPaddingBottom());
+            height = (int) (2 * mProgressRadius + 3 * mProgressWidth + getPaddingTop() + getPaddingBottom());
         }
         setMeasuredDimension(width, height);
     }
@@ -161,6 +164,48 @@ public class SuccessFailView extends View implements ValueAnimator.AnimatorUpdat
             canvas.rotate(currentAndle += 4, mProgressRadius, mProgressRadius);
             canvas.drawArc(new RectF(0, 0, mProgressRadius * 2, mProgressRadius * 2), startAngle, sweepAngle, false, mPaint);
             invalidate();
+        } else if (mStatus == Status.LoadSuccess) {
+            mPathCicleDst.reset();
+            mPaint.setColor(mSuccessColor);
+            mPathCicle.addCircle(getWidth() / 2, getHeight() / 2, mProgressRadius, Path.Direction.CW);
+            mPathMeasure.setPath(mPathCicle, false);
+            mPathMeasure.getSegment(0, circleValue * mPathMeasure.getLength(), mPathCicleDst, true);
+            canvas.drawPath(mPathCicleDst, mPaint);
+
+            if (circleValue == 1) {      //表示圆画完了,可以钩了
+                successPath.moveTo(getWidth() / 8 * 3, getWidth() / 2);
+                successPath.lineTo(getWidth() / 2, getWidth() / 5 * 3);
+                successPath.lineTo(getWidth() / 3 * 2, getWidth() / 5 * 2);
+                mPathMeasure.nextContour();
+                mPathMeasure.setPath(successPath, false);
+                mPathMeasure.getSegment(0, successValue * mPathMeasure.getLength(), mPathCicleDst, true);
+                canvas.drawPath(mPathCicleDst, mPaint);
+            }
+        } else if (mStatus == Status.LoadFailure) {
+            mPathCicleDst.reset();
+            mPaint.setColor(mFailureColor);
+            mPathCicle.addCircle(getWidth() / 2, getWidth() / 2, mProgressRadius, Path.Direction.CW);
+            mPathMeasure.setPath(mPathCicle, false);
+            mPathMeasure.getSegment(0, circleValue * mPathMeasure.getLength(), mPathCicleDst, true);
+            canvas.drawPath(mPathCicleDst, mPaint);
+
+            if (circleValue == 1) {  //表示圆画完了,可以画叉叉的右边部分
+                failurePathRight.moveTo(getWidth() / 3 * 2, getWidth() / 3);
+                failurePathRight.lineTo(getWidth() / 3, getWidth() / 3 * 2);
+                mPathMeasure.nextContour();
+                mPathMeasure.setPath(failurePathRight, false);
+                mPathMeasure.getSegment(0, failureValueRight * mPathMeasure.getLength(), mPathCicleDst, true);
+                canvas.drawPath(mPathCicleDst, mPaint);
+            }
+
+            if (failureValueRight == 1) {    //表示叉叉的右边部分画完了,可以画叉叉的左边部分
+                failurePathLeft.moveTo(getWidth() / 3, getWidth() / 3);
+                failurePathLeft.lineTo(getWidth() / 3 * 2, getWidth() / 3 * 2);
+                mPathMeasure.nextContour();
+                mPathMeasure.setPath(failurePathLeft, false);
+                mPathMeasure.getSegment(0, failureValueLeft * mPathMeasure.getLength(), mPathCicleDst, true);
+                canvas.drawPath(mPathCicleDst, mPaint);
+            }
         }
     }
 
@@ -171,6 +216,55 @@ public class SuccessFailView extends View implements ValueAnimator.AnimatorUpdat
     public void loadingStatus() {
         setStatus(Status.Loading);
         invalidate();
+    }
+
+    public void successStatus() {
+        setStatus(Status.LoadSuccess);
+        startSuccessAnim();
+    }
+
+    public void failureStatus() {
+        setStatus(Status.LoadFailure);
+        startFailureAnim();
+    }
+
+    private void startSuccessAnim() {
+        ValueAnimator success = ValueAnimator.ofFloat(0f, 1.0f);
+        success.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                successValue = (float) animation.getAnimatedValue();
+                MLog.i(successValue);
+                invalidate();
+            }
+        });
+        AnimatorSet set = new AnimatorSet();
+        set.play(success).after(circleAnimator);
+        set.setDuration(500);
+        set.start();
+    }
+
+    private void startFailureAnim() {
+        ValueAnimator failLeft = ValueAnimator.ofFloat(0f, 1.0f);
+        failLeft.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                failureValueRight = (float) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
+        ValueAnimator failRight = ValueAnimator.ofFloat(0f, 1.0f);
+        failRight.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                failureValueLeft = (float) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(failLeft).after(circleAnimator).before(failRight);
+        animatorSet.setDuration(500);
+        animatorSet.start();
     }
 
     public enum Status{

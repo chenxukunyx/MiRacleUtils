@@ -15,59 +15,59 @@ public class MLog {
 
     private static final String TAG = "MLog----->>";
 
-    public static void v(String msg) {
+    public static void v(Object msg) {
         v(null, msg);
     }
 
-    public static void v(String tag, String msg){
+    public static void v(String tag, Object msg){
         if (tag == null) {
             tag = TAG;
         }
-        Log.v(tag, msg);
+        Log.v(tag, msg.toString());
     }
 
-    public static void d(String msg) {
+    public static void d(Object msg) {
         d(null, msg);
     }
 
-    public static void d(String tag, String msg){
+    public static void d(String tag, Object msg){
         if (tag == null) {
             tag = TAG;
         }
-        Log.d(tag, msg);
+        Log.d(tag, msg.toString());
     }
 
-    public static void i(String msg) {
+    public static void i(Object msg) {
         i(null, msg);
     }
 
-    public static void i(String tag, String msg){
+    public static void i(String tag, Object msg){
         if (tag == null) {
             tag = TAG;
         }
-        Log.i(tag, msg);
+        Log.i(tag, msg.toString());
     }
 
-    public static void w(String msg) {
+    public static void w(Object msg) {
         w(null, msg);
     }
 
-    public static void w(String tag, String msg){
+    public static void w(String tag, Object msg){
         if (tag == null) {
             tag = TAG;
         }
-        Log.w(tag, msg);
+        Log.w(tag, msg.toString());
     }
 
-    public static void e(String msg) {
+    public static void e(Object msg) {
         e(null, msg);
     }
 
-    public static void e(String tag, String msg){
+    public static void e(String tag, Object msg){
         if (tag == null) {
             tag = TAG;
         }
-        Log.e(tag, msg);
+        Log.e(tag, msg.toString());
     }
 
 

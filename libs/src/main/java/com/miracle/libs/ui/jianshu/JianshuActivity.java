@@ -161,6 +161,7 @@ public class JianshuActivity extends Activity implements OnRefreshListener, OnRe
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         getJianshuData();
+        getLeetCodeData();
     }
 
     private String timeFormat(String time) {
@@ -235,4 +236,22 @@ public class JianshuActivity extends Activity implements OnRefreshListener, OnRe
         }).start();
     }
 
+    private void getLeetCodeData() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    document = Jsoup.connect("https://leetcode.com/problemset/all/")
+                            .timeout(10000)
+                            .get();
+                    Elements noteList = document.select("[class=reactable-data]");
+                    MLog.i("li" + noteList);
+                } catch (Exception e) {
+                    MLog.i(e.getMessage());
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+    }
 }

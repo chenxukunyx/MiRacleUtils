@@ -1,6 +1,7 @@
 package com.miracle.libs;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,34 +34,36 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
 
     private static final String TAG = "MiRacleActivity";
 
-    String str = "向";
     TextView testView;
-    Document document;
-    private List<JianshuBean> mList;
     private SuccessFailView successFailView;
-    private Button button;
+    private Button loading, success, failure;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        String result = AppCharacterParser.getInstace().getSelling(str);
-        Log.i(TAG, "----->>str: " + str);
         testView = (TextView) findViewById(R.id.test_view);
 
-        testView.setText(AppFileMgr.getSdCardSize() + "");
-        mList = new ArrayList<>();
+        testView.setText(AppFileMgr.getMobileEnableRAM() + "");
 
-        button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(this);
+        loading = (Button) findViewById(R.id.loading);
+        loading.setOnClickListener(this);
+        success = (Button) findViewById(R.id.success);
+        success.setOnClickListener(this);
+        failure = (Button) findViewById(R.id.failure);
+        failure.setOnClickListener(this);
         successFailView = (SuccessFailView) findViewById(R.id.successfail_view);
 
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.button) {
+        if (v.getId() == R.id.loading) {
             successFailView.loadingStatus();
+        } else if (R.id.success == v.getId()) {
+            successFailView.successStatus();
+        } else {
+            successFailView.failureStatus();
         }
     }
 }
