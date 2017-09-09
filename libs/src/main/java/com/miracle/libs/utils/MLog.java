@@ -20,10 +20,8 @@ public class MLog {
     }
 
     public static void v(String tag, Object msg){
-        if (tag == null) {
-            tag = TAG;
-        }
-        Log.v(tag, msg.toString());
+        checkTagNull(tag);
+        Log.v(tag, "----->>" + msg.toString());
     }
 
     public static void d(Object msg) {
@@ -31,10 +29,8 @@ public class MLog {
     }
 
     public static void d(String tag, Object msg){
-        if (tag == null) {
-            tag = TAG;
-        }
-        Log.d(tag, msg.toString());
+        checkTagNull(tag);
+        Log.d(tag, "----->>" + msg.toString());
     }
 
     public static void i(Object msg) {
@@ -42,10 +38,8 @@ public class MLog {
     }
 
     public static void i(String tag, Object msg){
-        if (tag == null) {
-            tag = TAG;
-        }
-        Log.i(tag, msg.toString());
+        checkTagNull(tag);
+        Log.i(tag, "----->>" + msg.toString());
     }
 
     public static void w(Object msg) {
@@ -53,10 +47,8 @@ public class MLog {
     }
 
     public static void w(String tag, Object msg){
-        if (tag == null) {
-            tag = TAG;
-        }
-        Log.w(tag, msg.toString());
+        checkTagNull(tag);
+        Log.w(tag, "----->>" + msg.toString());
     }
 
     public static void e(Object msg) {
@@ -64,10 +56,14 @@ public class MLog {
     }
 
     public static void e(String tag, Object msg){
+        checkTagNull(tag);
+        Log.e(tag, "----->>" + msg.toString());
+    }
+
+    private static void checkTagNull(String tag) {
         if (tag == null) {
             tag = TAG;
         }
-        Log.e(tag, msg.toString());
     }
 
 
