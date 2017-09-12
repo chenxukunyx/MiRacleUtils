@@ -6,8 +6,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.miracle.libs.entity.GameScore;
 import com.miracle.libs.utils.FileUtils;
+import com.miracle.libs.utils.MLog;
+import com.miracle.libs.utils.ToastUtils;
 import com.miracle.libs.view.SuccessFailView;
+
 
 /**
  * Create with Android studio
@@ -24,6 +28,7 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
     TextView testView;
     private SuccessFailView successFailView;
     private Button loading, success, failure;
+    GameScore mGameScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +36,7 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_test);
         testView = (TextView) findViewById(R.id.test_view);
 
-        testView.setText(FileUtils.getMobileEnableRAM() + "");
+        testView.setText(FileUtils.formatFileSize(FileUtils.getMobileEnableRAM()));
 
         loading = (Button) findViewById(R.id.loading);
         loading.setOnClickListener(this);
@@ -40,6 +45,9 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
         failure = (Button) findViewById(R.id.failure);
         failure.setOnClickListener(this);
         successFailView = (SuccessFailView) findViewById(R.id.successfail_view);
+
+        mGameScore = new GameScore("陈绪坤", 99, false);
+
 
     }
 
@@ -53,4 +61,47 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
             successFailView.failureStatus();
         }
     }
+
+//    private void doSomeWork() {
+//        Observable observable = Observable.create(new ObservableOnSubscribe() {
+//            @Override
+//            public void subscribe(ObservableEmitter e) throws Exception {
+//                e.onNext(1);
+//                e.onNext(2);
+//                e.onNext("3");
+//                e.onComplete();
+//            }
+//        });
+//
+//        Observer observer = new Observer() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//                MLog.i("onSubscribe : " + d.isDisposed());
+//            }
+//
+//            @Override
+//            public void onNext(Object value) {
+//                if (value instanceof String) {
+//                    MLog.i("onNext : " + value);
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                MLog.i("onComplete");
+//            }
+//        };
+//
+//        observable.map(new Function() {
+//            @Override
+//            public Object apply(Object o) throws Exception {
+//                return o.toString();
+//            }
+//        }).subscribe(observer);
+//    }
 }

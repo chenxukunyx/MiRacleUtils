@@ -15,7 +15,6 @@ import android.util.TypedValue;
 import android.view.View;
 
 import com.miracle.libs.R;
-import com.miracle.libs.utils.MLog;
 
 /**
  * Created with Android Studio
@@ -115,7 +114,6 @@ public class SuccessFailView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 circleValue = (float) animation.getAnimatedValue();
-                MLog.i("circleValue" + circleValue);
                 invalidate();
             }
         });
@@ -234,7 +232,6 @@ public class SuccessFailView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 successValue = (float) animation.getAnimatedValue();
-                MLog.i(successValue);
                 invalidate();
             }
         });
