@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
+
 android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
@@ -21,8 +26,18 @@ android {
     packagingOptions{
         exclude 'META-INF/rxjava.properties'
         exclude 'META-INF/rxandroid.properties'
-//        exclude 'META-INF/okhttp3.properties'
         exclude 'META-INF/okio.properties'
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(output.outputFile.parent, rootProject.getName()
+                    + "-" + buildType.name
+                    + "-" + releaseTime()
+                    + "-v" + defaultConfig.versionName
+                    + "-" + defaultConfig.versionCode
+                    + ".apk");
+        }
     }
 }
 

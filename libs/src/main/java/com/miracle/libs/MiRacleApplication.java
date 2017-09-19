@@ -5,6 +5,11 @@ import android.util.Log;
 
 import com.avos.avoscloud.AVOSCloud;
 import com.miracle.libs.constant.MiracleConstant;
+import com.miracle.libs.utils.CrashHandlerUtils;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
+
+import java.io.File;
 
 
 /**
@@ -25,6 +30,18 @@ public class MiRacleApplication extends Application {
     public void onCreate() {
         super.onCreate();
         initAVOSCloud();
+        Logger.addLogAdapter(new AndroidLogAdapter());
+        CrashHandlerUtils.getInstance().init(this, new CrashHandlerUtils.CrashListener() {
+            @Override
+            public void uploadExceptionToServer(File file) {
+
+            }
+
+            @Override
+            public void crashAction() {
+                Logger.e("uncaughtException");
+            }
+        }, "crashLog");
     }
 
     private void initAVOSCloud() {
