@@ -118,8 +118,9 @@ public class CrashHandlerUtils implements Thread.UncaughtExceptionHandler {
         if (!dir.exists()) {
             dir.mkdirs();
         }
+        MLog.i(TAG, "Path" + PATH);
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
-        mCrashLogFile = new File(PATH + mDirectory + FILE_NAME + time + FILE_NAME_SUFFIX);
+        mCrashLogFile = new File(dir, FILE_NAME + time + FILE_NAME_SUFFIX);
         try {
             PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter(mCrashLogFile)));
             printWriter.println(time);

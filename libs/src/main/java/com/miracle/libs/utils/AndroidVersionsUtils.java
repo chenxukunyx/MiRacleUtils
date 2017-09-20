@@ -47,37 +47,37 @@ public class AndroidVersionsUtils {
     public static final String N_MR1 = "N_MR1";//25;
 
 
-    private static final Map<Integer, String> mAndroidVer;
-
-    static {
-        mAndroidVer = new HashMap<>();
-        mAndroidVer.put(1, BASE);
-        mAndroidVer.put(2, BASE_1_1);
-        mAndroidVer.put(3, CUPCAKE);
-        mAndroidVer.put(10000, CUR_DEVELOPMENT);
-        mAndroidVer.put(4, DONUT);
-        mAndroidVer.put(5, ECLAIR);
-        mAndroidVer.put(6, ECLAIR_0_1);
-        mAndroidVer.put(7, ECLAIR_MR1);
-        mAndroidVer.put(8, FROYO);
-        mAndroidVer.put(9, GINGERBREAD);
-        mAndroidVer.put(10, GINGERBREAD_MR1);
-        mAndroidVer.put(11, HONEYCOMB);
-        mAndroidVer.put(12, HONEYCOMB_MR1);
-        mAndroidVer.put(13, HONEYCOMB_MR2);
-        mAndroidVer.put(14, ICE_CREAM_SANDWICH);
-        mAndroidVer.put(15, ICE_CREAM_SANDWICH_MR1);
-        mAndroidVer.put(16, JELLY_BEAN);
-        mAndroidVer.put(17, JELLY_BEAN_MR1);
-        mAndroidVer.put(18, JELLY_BEAN_MR2);
-        mAndroidVer.put(19, KITKAT);
-        mAndroidVer.put(20, KITKAT_WATCH);
-        mAndroidVer.put(21, LOLLIPOP);
-        mAndroidVer.put(22, LOLLIPOP_MR1);
-        mAndroidVer.put(23, M);
-        mAndroidVer.put(24, N);
-        mAndroidVer.put(24, N_MR1);
-    }
+//    private static final Map<Integer, String> mAndroidVer;
+//
+//    static {
+//        mAndroidVer = new HashMap<>();
+//        mAndroidVer.put(1, BASE);
+//        mAndroidVer.put(2, BASE_1_1);
+//        mAndroidVer.put(3, CUPCAKE);
+//        mAndroidVer.put(10000, CUR_DEVELOPMENT);
+//        mAndroidVer.put(4, DONUT);
+//        mAndroidVer.put(5, ECLAIR);
+//        mAndroidVer.put(6, ECLAIR_0_1);
+//        mAndroidVer.put(7, ECLAIR_MR1);
+//        mAndroidVer.put(8, FROYO);
+//        mAndroidVer.put(9, GINGERBREAD);
+//        mAndroidVer.put(10, GINGERBREAD_MR1);
+//        mAndroidVer.put(11, HONEYCOMB);
+//        mAndroidVer.put(12, HONEYCOMB_MR1);
+//        mAndroidVer.put(13, HONEYCOMB_MR2);
+//        mAndroidVer.put(14, ICE_CREAM_SANDWICH);
+//        mAndroidVer.put(15, ICE_CREAM_SANDWICH_MR1);
+//        mAndroidVer.put(16, JELLY_BEAN);
+//        mAndroidVer.put(17, JELLY_BEAN_MR1);
+//        mAndroidVer.put(18, JELLY_BEAN_MR2);
+//        mAndroidVer.put(19, KITKAT);
+//        mAndroidVer.put(20, KITKAT_WATCH);
+//        mAndroidVer.put(21, LOLLIPOP);
+//        mAndroidVer.put(22, LOLLIPOP_MR1);
+//        mAndroidVer.put(23, M);
+//        mAndroidVer.put(24, N);
+//        mAndroidVer.put(24, N_MR1);
+//    }
 
     /**
      * 是否在2.2版本及以上
@@ -176,6 +176,15 @@ public class AndroidVersionsUtils {
     }
 
     public static String getAndroidVersion() {
-        return mAndroidVer.get(Build.VERSION.SDK_INT);
+//        return mAndroidVer.get(Build.VERSION.SDK_INT);
+        return Build.VERSION.RELEASE + "  " + Build.VERSION.SDK_INT;
+    }
+
+    public static int getAndroidSDKVersion() {
+        return Build.VERSION.SDK_INT;
+    }
+
+    public static String getAndroidReleaseVersion() {
+        return Build.VERSION.RELEASE;
     }
 }

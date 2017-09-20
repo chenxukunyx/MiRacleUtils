@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.miracle.lib_http.net.DefaultObserver;
+import com.miracle.lib_http.net.HttpManager;
+import com.miracle.lib_http.net.OnResultCallback;
 import com.miracle.libs.utils.FileUtils;
 import com.miracle.libs.utils.MLog;
 import com.miracle.libs.view.SuccessFailView;
@@ -16,6 +20,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
+import okhttp3.ResponseBody;
 
 
 /**
@@ -38,9 +43,9 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        testView = (TextView) findViewById(R.id.test_view);
-
-        testView.setText(FileUtils.formatFileSize(FileUtils.getMobileEnableRAM()));
+//        testView = (TextView) findViewById(R.id.test_view);
+//
+//        testView.setText(FileUtils.formatFileSize(FileUtils.getMobileEnableRAM()));
 
         loading = (Button) findViewById(R.id.loading);
         loading.setOnClickListener(this);
@@ -60,6 +65,7 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
         } else {
             successFailView.failureStatus();
             doSomeWork();
+            testView.setText(FileUtils.formatFileSize(FileUtils.getMobileEnableRAM()));
         }
     }
 
@@ -114,5 +120,17 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
                 return o.toString();
             }
         }).subscribe(observer);
+
+        HttpManager.getInstance(this).request(HttpManager.getInstance(this).getApiService().getData(), new DefaultObserver<ResponseBody>(new OnResultCallback() {
+            @Override
+            public void onSuccess(Object o) {
+
+            }
+
+            @Override
+            public void onError(int code, String msg) {
+
+            }
+        }));
     }
 }
