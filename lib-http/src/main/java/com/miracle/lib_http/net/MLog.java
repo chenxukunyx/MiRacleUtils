@@ -1,4 +1,4 @@
-package com.miracle.lib_http;
+package com.miracle.lib_http.net;
 
 import android.util.Log;
 

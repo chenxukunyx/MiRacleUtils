@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.miracle.lib_http.MLog;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
