@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.miracle.lib_http.*;
+import com.miracle.lib_http.TestEntity;
 import com.miracle.lib_http.net.DefaultObserver;
 import com.miracle.lib_http.net.HttpManager;
 import com.miracle.lib_http.net.OnResultCallback;
@@ -43,9 +45,9 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-//        testView = (TextView) findViewById(R.id.test_view);
-//
-//        testView.setText(FileUtils.formatFileSize(FileUtils.getMobileEnableRAM()));
+        testView = (TextView) findViewById(R.id.test_view);
+
+        testView.setText(FileUtils.formatFileSize(FileUtils.getMobileEnableRAM()));
 
         loading = (Button) findViewById(R.id.loading);
         loading.setOnClickListener(this);
@@ -65,7 +67,6 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
         } else {
             successFailView.failureStatus();
             doSomeWork();
-            testView.setText(FileUtils.formatFileSize(FileUtils.getMobileEnableRAM()));
         }
     }
 
@@ -76,60 +77,61 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
     }
 
     private void doSomeWork() {
-        Observable observable = Observable.create(new ObservableOnSubscribe() {
+//        Observable observable = Observable.create(new ObservableOnSubscribe() {
+//            @Override
+//            public void subscribe(ObservableEmitter e) throws Exception {
+//                e.onNext(1);
+//                e.onNext(2);
+//                e.onNext("3");
+//                e.onComplete();
+//            }
+//        });
+//
+//        Observable observable1 = Observable.just(1, 2, 3, "4");
+//
+//        Observer observer = new Observer() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//                Logger.i(TAG, d.isDisposed());
+////                MLog.i("onSubscribe : " + d.isDisposed());
+//            }
+//
+//            @Override
+//            public void onNext(Object value) {
+//                if (value instanceof String) {
+//                    MLog.i("onNext : " + value);
+//                    Logger.i(TAG, "----->onNext : " + value);
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                MLog.i("onComplete");
+//            }
+//        };
+
+//        observable1.map(new Function() {
+//            @Override
+//            public Object apply(Object o) throws Exception {
+//                return o.toString();
+//            }
+//        }).subscribe(observer);
+
+        HttpManager.getInstance(this).request(HttpManager.getInstance(this).getApiService().getData(), new DefaultObserver<TestEntity>(new OnResultCallback<TestEntity>() {
+
             @Override
-            public void subscribe(ObservableEmitter e) throws Exception {
-                e.onNext(1);
-                e.onNext(2);
-                e.onNext("3");
-                e.onComplete();
-            }
-        });
-
-        Observable observable1 = Observable.just(1, 2, 3, "4");
-
-        Observer observer = new Observer() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                Logger.i(TAG, d.isDisposed());
-//                MLog.i("onSubscribe : " + d.isDisposed());
-            }
-
-            @Override
-            public void onNext(Object value) {
-                if (value instanceof String) {
-                    MLog.i("onNext : " + value);
-                    Logger.i(TAG, "----->onNext : " + value);
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-                MLog.i("onComplete");
-            }
-        };
-
-        observable1.map(new Function() {
-            @Override
-            public Object apply(Object o) throws Exception {
-                return o.toString();
-            }
-        }).subscribe(observer);
-
-        HttpManager.getInstance(this).request(HttpManager.getInstance(this).getApiService().getData(), new DefaultObserver<ResponseBody>(new OnResultCallback() {
-            @Override
-            public void onSuccess(Object o) {
-
+            public void onSuccess(TestEntity testEntity) {
+                Logger.d(testEntity.getResults().get(0).getDesc());
             }
 
             @Override
             public void onError(int code, String msg) {
-
+                Logger.d(msg);
             }
         }));
     }

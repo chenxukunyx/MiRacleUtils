@@ -25,10 +25,10 @@ import io.reactivex.exceptions.CompositeException;
  */
 public class DefaultObserver<T> implements Observer<T>{
 
-    private OnResultCallback mOnResultListener;
+    private OnResultCallback<T> mOnResultListener;
     private Disposable mDisposable;
 
-    public DefaultObserver(OnResultCallback mOnResultListener) {
+    public DefaultObserver(OnResultCallback<T> mOnResultListener) {
         this.mOnResultListener = mOnResultListener;
     }
 

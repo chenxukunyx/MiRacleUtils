@@ -11,5 +11,5 @@ package com.miracle.lib_http.net;
  */
 public class UrlConfig {
 
-    public static String BASE_URL = "";
+    public static String BASE_URL = "http://gank.io/api/";
 }

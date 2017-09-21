@@ -133,26 +133,14 @@ public class HttpManager {
 
     }
 
-    private <T> void toSubscribe(Observable<ApiResponse<T>> o, Observer<T> s) {
+    private <T> void toSubscribe(Observable<T> o, Observer<T> s) {
         o.subscribeOn(Schedulers.io())
-                .map(new Function<ApiResponse<T>, T>() {
-
-                    @Override
-                    public T apply(ApiResponse<T> response) throws Exception {
-                        int code = response.getCode();
-                        if (code != 0) {
-                            throw new ApiException(code, response.getMessage());
-                        } else {
-                            return response.getResult();
-                        }
-                    }
-                })
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s);
     }
 
-    public void request(Observable<ApiResponse<ResponseBody>> subscribe, Observer<ResponseBody> subscriber) {
+    public <T> void request(Observable<T> subscribe, Observer<T> subscriber) {
         toSubscribe(subscribe, subscriber);
     }
 
