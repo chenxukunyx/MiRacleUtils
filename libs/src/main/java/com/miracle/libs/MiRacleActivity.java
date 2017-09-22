@@ -16,6 +16,8 @@ import com.miracle.libs.utils.MLog;
 import com.miracle.libs.view.SuccessFailView;
 import com.orhanobut.logger.Logger;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -77,61 +79,30 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
     }
 
     private void doSomeWork() {
-//        Observable observable = Observable.create(new ObservableOnSubscribe() {
-//            @Override
-//            public void subscribe(ObservableEmitter e) throws Exception {
-//                e.onNext(1);
-//                e.onNext(2);
-//                e.onNext("3");
-//                e.onComplete();
-//            }
-//        });
-//
-//        Observable observable1 = Observable.just(1, 2, 3, "4");
-//
-//        Observer observer = new Observer() {
-//            @Override
-//            public void onSubscribe(Disposable d) {
-//                Logger.i(TAG, d.isDisposed());
-////                MLog.i("onSubscribe : " + d.isDisposed());
-//            }
-//
-//            @Override
-//            public void onNext(Object value) {
-//                if (value instanceof String) {
-//                    MLog.i("onNext : " + value);
-//                    Logger.i(TAG, "----->onNext : " + value);
-//                }
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//
-//            }
-//
-//            @Override
-//            public void onComplete() {
-//                MLog.i("onComplete");
-//            }
-//        };
-
-//        observable1.map(new Function() {
-//            @Override
-//            public Object apply(Object o) throws Exception {
-//                return o.toString();
-//            }
-//        }).subscribe(observer);
-
         HttpManager.getInstance(this).request(HttpManager.getInstance(this).getApiService().getData(), new DefaultObserver<TestEntity>(new OnResultCallback<TestEntity>() {
 
             @Override
             public void onSuccess(TestEntity testEntity) {
-                Logger.d(testEntity.getResults().get(0).getDesc());
+                MLog.i(TAG, testEntity.isError());
+                MLog.i(TAG, "-------------------------------------------------\n");
+                List<TestEntity.ResultsBean> list = testEntity.getResults();
+                for (TestEntity.ResultsBean result : list) {
+                    MLog.i(TAG, "id: " + result.get_id());
+                    MLog.i(TAG, "createAt: " + result.getCreatedAt());
+                    MLog.i(TAG, "desc: " + result.getDesc());
+                    MLog.i(TAG, "publishAt: " + result.getPublishedAt());
+                    MLog.i(TAG, "source: " + result.getSource());
+                    MLog.i(TAG, "type: " + result.getType());
+                    MLog.i(TAG, "url: " + result.getUrl());
+                    MLog.i(TAG, "who: " + result.getWho());
+                    MLog.i(TAG, "-----------------------------\n");
+                }
+                MLog.i(testEntity.getResults().get(0).getDesc());
             }
 
             @Override
             public void onError(int code, String msg) {
-                Logger.d(msg);
+                MLog.d(TAG, msg);
             }
         }));
     }
