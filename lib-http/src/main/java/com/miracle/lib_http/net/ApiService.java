@@ -18,8 +18,11 @@ import retrofit2.http.GET;
 public interface ApiService {
 
 //    @GET
-//    Observable<ResponseBody> getData();
+//    Observable<ResponseBody> getAndroidData();
 
     @GET("data/Android/10/1")
-    Observable<TestEntity> getData();
+    Observable<TestEntity> getAndroidData();
+
+    @GET("data/福利/10/1")
+    Observable<ResponseBody> getFuliData();
 }

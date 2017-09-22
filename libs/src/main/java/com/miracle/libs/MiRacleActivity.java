@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.miracle.lib_http.*;
 import com.miracle.lib_http.TestEntity;
 import com.miracle.lib_http.net.DefaultObserver;
 import com.miracle.lib_http.net.HttpManager;
@@ -14,16 +13,10 @@ import com.miracle.lib_http.net.OnResultCallback;
 import com.miracle.libs.utils.FileUtils;
 import com.miracle.libs.utils.MLog;
 import com.miracle.libs.view.SuccessFailView;
-import com.orhanobut.logger.Logger;
 
+import java.io.IOException;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 import okhttp3.ResponseBody;
 
 
@@ -79,7 +72,7 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
     }
 
     private void doSomeWork() {
-        HttpManager.getInstance(this).request(HttpManager.getInstance(this).getApiService().getData(), new DefaultObserver<TestEntity>(new OnResultCallback<TestEntity>() {
+        HttpManager.getInstance(this).request(HttpManager.getInstance(this).getApiService().getAndroidData(), new DefaultObserver<TestEntity>(new OnResultCallback<TestEntity>() {
 
             @Override
             public void onSuccess(TestEntity testEntity) {
@@ -97,7 +90,6 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
                     MLog.i(TAG, "who: " + result.getWho());
                     MLog.i(TAG, "-----------------------------\n");
                 }
-                MLog.i(testEntity.getResults().get(0).getDesc());
             }
 
             @Override
@@ -105,5 +97,25 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
                 MLog.d(TAG, msg);
             }
         }));
+
+        HttpManager.getInstance(this).request(HttpManager.getInstance(this).getApiService().getFuliData(),
+                new DefaultObserver<ResponseBody>(new OnResultCallback<ResponseBody>() {
+                    @Override
+                    public void onSuccess(ResponseBody responseBody) {
+
+                        try {
+                            byte[] bytes = responseBody.bytes();
+                            String s = new String(bytes, "utf-8");
+                            MLog.i(TAG, s);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code, String msg) {
+                        MLog.i(TAG, msg);
+                    }
+                }));
     }
 }

@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.miracle.lib_http.config.UrlConfig;
 
 import java.io.File;
 import java.util.Map;
@@ -13,12 +14,10 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Cache;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -43,15 +42,14 @@ public class HttpManager {
     private ApiService mApiService;
     private static Context mContext;
     private static String base_url = UrlConfig.BASE_URL;
-    private volatile static HttpManager mInstance;
 
-    private static Retrofit.Builder builder = new Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .baseUrl(base_url);
-    private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
-            .addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS))
-            .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+//    private static Retrofit.Builder builder = new Retrofit.Builder()
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+//            .baseUrl(base_url);
+//    private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+//            .addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS))
+//            .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
 
     private static class SingletonHolder {
         private static HttpManager INSTANCE = new HttpManager(mContext);

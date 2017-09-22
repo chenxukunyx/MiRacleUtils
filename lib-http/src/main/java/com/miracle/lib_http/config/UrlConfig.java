@@ -1,4 +1,4 @@
-package com.miracle.lib_http.net;
+package com.miracle.lib_http.config;
 
 /**
  * Create with Android studio
