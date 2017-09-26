@@ -6,20 +6,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.miracle.lib_http.TestEntity;
-import com.miracle.lib_http.net.DefaultObserver;
-import com.miracle.lib_http.net.HttpManager;
-import com.miracle.lib_http.net.OnResultCallback;
-import com.miracle.lib_http.utils.Unicode2CharUtils;
+import com.miracle.libhttp.TestEntity;
+import com.miracle.libhttp.net.DefaultObserver;
+import com.miracle.libhttp.net.HttpManager;
+import com.miracle.libhttp.net.OnResultCallback;
+import com.miracle.libhttp.utils.Unicode2CharUtils;
 import com.miracle.libs.utils.FileUtils;
 import com.miracle.libs.utils.MLog;
 import com.miracle.libs.view.SuccessFailView;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.List;
 
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
 

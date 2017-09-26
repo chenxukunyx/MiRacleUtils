@@ -78,5 +78,5 @@ dependencies {
     // LeanCloud 应用内搜索包
     compile ('cn.leancloud.android:avoscloud-search:v4.4.4@aar')
 
-    compile project(':lib-http')
+    compile project(':libhttp')
 }
