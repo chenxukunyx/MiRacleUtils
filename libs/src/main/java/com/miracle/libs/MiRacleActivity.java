@@ -10,13 +10,16 @@ import com.miracle.lib_http.TestEntity;
 import com.miracle.lib_http.net.DefaultObserver;
 import com.miracle.lib_http.net.HttpManager;
 import com.miracle.lib_http.net.OnResultCallback;
+import com.miracle.lib_http.utils.Unicode2CharUtils;
 import com.miracle.libs.utils.FileUtils;
 import com.miracle.libs.utils.MLog;
 import com.miracle.libs.view.SuccessFailView;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
 
@@ -59,6 +62,8 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
             successFailView.loadingStatus();
         } else if (R.id.success == v.getId()) {
             successFailView.successStatus();
+            String s = Unicode2CharUtils.decodeUnicode("\\u4ee3\\u7801\\u5bb6");
+            MLog.i(TAG, s);
         } else {
             successFailView.failureStatus();
             doSomeWork();
@@ -77,7 +82,7 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
             @Override
             public void onSuccess(TestEntity testEntity) {
                 MLog.i(TAG, testEntity.isError());
-                MLog.i(TAG, "-------------------------------------------------\n");
+                MLog.i(TAG, "-------------------------------------------------\\n");
                 List<TestEntity.ResultsBean> list = testEntity.getResults();
                 for (TestEntity.ResultsBean result : list) {
                     MLog.i(TAG, "id: " + result.get_id());
@@ -88,7 +93,7 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
                     MLog.i(TAG, "type: " + result.getType());
                     MLog.i(TAG, "url: " + result.getUrl());
                     MLog.i(TAG, "who: " + result.getWho());
-                    MLog.i(TAG, "-----------------------------\n");
+                    MLog.i(TAG, "-----------------------------\\n");
                 }
             }
 
@@ -99,23 +104,21 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
         }));
 
         HttpManager.getInstance(this).request(HttpManager.getInstance(this).getApiService().getFuliData(),
-                new DefaultObserver<ResponseBody>(new OnResultCallback<ResponseBody>() {
-                    @Override
-                    public void onSuccess(ResponseBody responseBody) {
+                        new DefaultObserver<ResponseBody>(new OnResultCallback<ResponseBody>() {
+                            @Override
+                            public void onSuccess(ResponseBody responseBody) {
+                                try {
+                                    String s = responseBody.string();
+                                    MLog.i(TAG, s);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
 
-                        try {
-                            byte[] bytes = responseBody.bytes();
-                            String s = new String(bytes, "utf-8");
-                            MLog.i(TAG, s);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(int code, String msg) {
-                        MLog.i(TAG, msg);
-                    }
-                }));
+                            @Override
+                            public void onError(int code, String msg) {
+                                MLog.i(TAG, msg);
+                            }
+                        }));
     }
 }

@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Cache;
@@ -42,6 +43,8 @@ public class HttpManager {
     private ApiService mApiService;
     private static Context mContext;
     private static String base_url = UrlConfig.BASE_URL;
+
+    private Scheduler schedulerObserable = Schedulers.io();
 
 //    private static Retrofit.Builder builder = new Retrofit.Builder()
 //            .addConverterFactory(GsonConverterFactory.create())
@@ -132,7 +135,7 @@ public class HttpManager {
     }
 
     private <T> void toSubscribe(Observable<T> o, Observer<T> s) {
-        o.subscribeOn(Schedulers.io())
+        o.subscribeOn(schedulerObserable)
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s);
@@ -144,5 +147,14 @@ public class HttpManager {
 
     public ApiService getApiService() {
         return mApiService;
+    }
+
+    public Scheduler getSchedulerObserable() {
+        return schedulerObserable;
+    }
+
+    public HttpManager setSchedulerObserable(Scheduler schedulerObserable) {
+        this.schedulerObserable = schedulerObserable;
+        return this;
     }
 }
