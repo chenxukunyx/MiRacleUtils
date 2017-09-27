@@ -68,12 +68,6 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
         }
     }
 
-    private boolean test() {
-        Integer a = new Integer(30);
-        Integer b = new Integer(30);
-        return a == b;
-    }
-
     private void doSomeWork() {
         HttpManager.getInstance(this).request(HttpManager.getInstance(this).getApiService().getAndroidData(), new DefaultObserver<TestEntity>(new OnResultCallback<TestEntity>() {
 
