@@ -41,7 +41,7 @@ public class DataCleanUtils {
     * */
     public static void cleanInternalCache(Context context) {
         deleteFilesByDirectory(context.getCacheDir());
-//    ImageLoader.getInstance().clearMemoryCache();  // 清除内存缓存
+//    ImageLoader.getHttpManager().clearMemoryCache();  // 清除内存缓存
     }
 
     /**
@@ -130,7 +130,7 @@ public class DataCleanUtils {
         cleanDatabases(context);
         cleanSharedPreference(context);
         cleanFiles(context);
-//        ImageLoader.getInstance().clearDiskCache();  // 清除本地缓存
+//        ImageLoader.getHttpManager().clearDiskCache();  // 清除本地缓存
     }
 
     /**

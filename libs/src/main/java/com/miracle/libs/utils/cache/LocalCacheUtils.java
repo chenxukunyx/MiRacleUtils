@@ -25,7 +25,7 @@ import java.io.IOException;
 
 public class LocalCacheUtils extends Cache{
 
-    private static final String CACHE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/bitmap_cache";
+    public static final String CACHE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/bitmap_cache";
 
 //    public void setLocalBitmapCache(String url, Bitmap bitmap) {
 //        File dir = new File(CACHE_PATH);

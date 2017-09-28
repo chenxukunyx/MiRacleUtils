@@ -46,26 +46,14 @@ public class HttpManager {
 
     private Scheduler schedulerObserable = Schedulers.io();
 
-//    private static Retrofit.Builder builder = new Retrofit.Builder()
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//            .baseUrl(base_url);
-//    private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
-//            .addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS))
-//            .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-
-    private static class SingletonHolder {
-        private static HttpManager INSTANCE = new HttpManager(mContext);
-    }
-
-    public static HttpManager getInstance(Context context) {
+    public static HttpManager getHttpManager(Context context) {
         if (context != null) {
             mContext = context;
         }
-        return SingletonHolder.INSTANCE;
+        return new HttpManager(context);
     }
 
-    public static HttpManager getInstance(Context context, String url) {
+    public static HttpManager getHttpManager(Context context, String url) {
         if (context != null) {
             mContext = context;
         }
@@ -73,7 +61,7 @@ public class HttpManager {
         return new HttpManager(context, url);
     }
 
-    public static HttpManager getInstance(Context context, String url, Map<String, String> headers) {
+    public static HttpManager getHttpManager(Context context, String url, Map<String, String> headers) {
         if (context != null) {
             mContext = context;
         }

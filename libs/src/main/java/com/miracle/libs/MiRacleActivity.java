@@ -69,7 +69,7 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
     }
 
     private void doSomeWork() {
-        HttpManager.getInstance(this).request(HttpManager.getInstance(this).getApiService().getAndroidData(), new DefaultObserver<TestEntity>(new OnResultCallback<TestEntity>() {
+        HttpManager.getHttpManager(this).request(HttpManager.getHttpManager(this).getApiService().getAndroidData(), new DefaultObserver<TestEntity>(new OnResultCallback<TestEntity>() {
 
             @Override
             public void onSuccess(TestEntity testEntity) {
@@ -95,16 +95,16 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
             }
         }));
 
-        HttpManager.getInstance(this).request(HttpManager.getInstance(this).getApiService().getFuliData(),
-                        new DefaultObserver<ResponseBody>(new OnResultCallback<ResponseBody>() {
+        HttpManager.getHttpManager(this).request(HttpManager.getHttpManager(this).getApiService().getFuliData(),
+                        new DefaultObserver<TestEntity>(new OnResultCallback<TestEntity>() {
                             @Override
-                            public void onSuccess(ResponseBody responseBody) {
-                                try {
-                                    String s = responseBody.string();
-                                    MLog.i(TAG, s);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                            public void onSuccess(TestEntity responseBody) {
+//                                try {
+//                                    String s = responseBody.string();
+//                                    MLog.i(TAG, s);
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                }
                             }
 
                             @Override
@@ -112,5 +112,12 @@ public class MiRacleActivity extends Activity implements View.OnClickListener{
                                 MLog.i(TAG, msg);
                             }
                         }));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MiRacleApplication.getRefWatcher(this).watch(this);
+        MLog.i(TAG, "onDestory");
     }
 }

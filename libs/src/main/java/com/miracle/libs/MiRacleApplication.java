@@ -1,6 +1,7 @@
 package com.miracle.libs;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import com.avos.avoscloud.AVOSCloud;
@@ -8,6 +9,8 @@ import com.miracle.libs.constant.MiracleConstant;
 import com.miracle.libs.utils.CrashHandlerUtils;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.io.File;
 
@@ -24,6 +27,8 @@ import java.io.File;
 public class MiRacleApplication extends Application {
 
     private static final String TAG = "MiRacleApplication";
+
+    private RefWatcher refWatcher;
 
 
     @Override
@@ -42,11 +47,20 @@ public class MiRacleApplication extends Application {
                 Logger.e("uncaughtException");
             }
         }, "crashLog");
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        refWatcher = LeakCanary.install(this);
     }
 
     private void initAVOSCloud() {
         AVOSCloud.initialize(this, MiracleConstant.APP_ID, MiracleConstant.APP_KEY);
         AVOSCloud.setDebugLogEnabled(true);
+    }
+
+    public static RefWatcher getRefWatcher(Context context) {
+        MiRacleApplication application = (MiRacleApplication) context.getApplicationContext();
+        return application.refWatcher;
     }
 
 }
