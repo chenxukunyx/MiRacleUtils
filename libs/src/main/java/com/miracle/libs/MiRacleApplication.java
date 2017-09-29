@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.avos.avoscloud.AVOSCloud;
+import com.miracle.libhttp.net.HttpFactory;
 import com.miracle.libs.constant.MiracleConstant;
 import com.miracle.libs.utils.CrashHandlerUtils;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -34,6 +34,7 @@ public class MiRacleApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        HttpFactory.init(this.getApplicationContext());
         initAVOSCloud();
         Logger.addLogAdapter(new AndroidLogAdapter());
         CrashHandlerUtils.getInstance().init(this, new CrashHandlerUtils.CrashListener() {
@@ -54,8 +55,8 @@ public class MiRacleApplication extends Application {
     }
 
     private void initAVOSCloud() {
-        AVOSCloud.initialize(this, MiracleConstant.APP_ID, MiracleConstant.APP_KEY);
-        AVOSCloud.setDebugLogEnabled(true);
+//        AVOSCloud.initialize(this, MiracleConstant.APP_ID, MiracleConstant.APP_KEY);
+//        AVOSCloud.setDebugLogEnabled(true);
     }
 
     public static RefWatcher getRefWatcher(Context context) {

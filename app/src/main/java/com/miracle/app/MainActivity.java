@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.miracle.libhttp.TestEntity;
 import com.miracle.libhttp.net.DefaultObserver;
+import com.miracle.libhttp.net.HttpFactory;
 import com.miracle.libhttp.net.HttpManager;
 import com.miracle.libhttp.net.OnResultCallback;
 import com.miracle.libs.utils.FileUtils;
@@ -44,29 +45,28 @@ public class MainActivity extends AppCompatActivity{
     private void init() {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        HttpManager.getHttpManager(this).request(HttpManager.getHttpManager(this).getApiService().getFuliData(),
+//        HttpManager.getHttpManager(this).request(HttpManager.getHttpManager(this).getApiService().getFuliData(),
+//                new DefaultObserver<TestEntity>(new OnResultCallback<TestEntity>() {
+//                    @Override
+//                    public void onSuccess(TestEntity entity) {
+//                        imageViewAdapter = new ImageViewAdapter(MainActivity.this, entity);
+//                        recyclerView.setAdapter(imageViewAdapter);
+//                        imageViewAdapter.notifyDataSetChanged();
+//                    }
+//
+//                    @Override
+//                    public void onError(int code, String msg) {
+//
+//                    }
+//                }));
+        HttpFactory.getHttpManager().request(HttpFactory.getHttpManager().getApiService().getFuliData(),
                 new DefaultObserver<TestEntity>(new OnResultCallback<TestEntity>() {
                     @Override
                     public void onSuccess(TestEntity entity) {
                         imageViewAdapter = new ImageViewAdapter(MainActivity.this, entity);
                         recyclerView.setAdapter(imageViewAdapter);
                         imageViewAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onError(int code, String msg) {
-
-                    }
-                }));
-
-        HttpManager.getHttpManager(this).request(HttpManager.getHttpManager(this).getApiService().getAndroidData(),
-                new DefaultObserver<TestEntity>(new OnResultCallback<TestEntity>() {
-                    @Override
-                    public void onSuccess(TestEntity entity) {
-                        for (TestEntity.ResultsBean resultsBean : entity.getResults()) {
-                            MLog.i(TAG, resultsBean.getDesc());
-                            MLog.i(TAG, "------------------");
-                        }
+                        MLog.i(TAG, entity.getResults().get(30).getDesc());
                     }
 
                     @Override

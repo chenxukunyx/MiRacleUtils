@@ -9,7 +9,6 @@ import android.widget.ImageView;
 
 import com.miracle.libhttp.TestEntity;
 import com.miracle.libs.utils.GlideUtils;
-import com.miracle.libs.utils.cache.ImageUtils;
 import com.miracle.miracleutils.R;
 
 
@@ -41,7 +40,6 @@ public class ImageViewAdapter extends RecyclerView.Adapter<ImageViewAdapter.MyVi
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-//        ImageUtils.getInstance().displayImage(holder.imageView, testEntity.getResults().get(position).getUrl());
         GlideUtils.getInstance().LoadContextBitmap(mContext, testEntity.getResults().get(position).getUrl(),
                 holder.imageView, GlideUtils.LOAD_BITMAP);
     }

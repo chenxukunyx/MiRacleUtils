@@ -23,7 +23,7 @@ public interface ApiService {
     @GET("data/Android/10/1")
     Observable<TestEntity> getAndroidData();
 
-    @GET("data/福利/50/1")
+    @GET("data/福利/50/2")
     Observable<TestEntity> getFuliData();
 
 }

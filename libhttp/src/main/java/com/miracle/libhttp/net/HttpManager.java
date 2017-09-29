@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.miracle.libhttp.config.UrlConfig;
+import com.miracle.libhttp.utils.MLog;
 
 import java.io.File;
 import java.util.Map;
@@ -39,57 +40,30 @@ public class HttpManager {
     private File httpCacheDir;
     private static final int DEFAULT_TIMEOUT = 5;
     private Retrofit retrofit;
-    private static OkHttpClient okHttpClient;
+    private OkHttpClient okHttpClient;
     private ApiService mApiService;
-    private static Context mContext;
     private static String base_url = UrlConfig.BASE_URL;
 
     private Scheduler schedulerObserable = Schedulers.io();
 
-    public static HttpManager getHttpManager(Context context) {
-        if (context != null) {
-            mContext = context;
-        }
-        return new HttpManager(context);
-    }
-
-    public static HttpManager getHttpManager(Context context, String url) {
-        if (context != null) {
-            mContext = context;
-        }
-
-        return new HttpManager(context, url);
-    }
-
-    public static HttpManager getHttpManager(Context context, String url, Map<String, String> headers) {
-        if (context != null) {
-            mContext = context;
-        }
-        return new HttpManager(context, url, headers);
-    }
-
-    private HttpManager() {
-
-    }
-
-    private HttpManager(Context context) {
+    public HttpManager(Context context) {
 
         this(context, base_url, null);
     }
 
-    private HttpManager(Context context, String url) {
+    public HttpManager(Context context, String url) {
 
         this(context, url, null);
     }
 
-    private HttpManager(Context context, String url, Map<String, String> headers) {
+    public HttpManager(Context context, String url, Map<String, String> headers) {
 
         if (TextUtils.isEmpty(url)) {
             url = base_url;
         }
 
         if (httpCacheDir == null) {
-            httpCacheDir = new File(mContext.getCacheDir(), "http_cache");
+            httpCacheDir = new File(context.getCacheDir(), "http_cache");
         }
 
         try {
@@ -129,12 +103,8 @@ public class HttpManager {
                 .subscribe(s);
     }
 
-    public <T> void request(Observable<T> subscribe, Observer<T> subscriber) {
+    public   <T> void request(Observable<T> subscribe, Observer<T> subscriber) {
         toSubscribe(subscribe, subscriber);
-    }
-
-    public ApiService getApiService() {
-        return mApiService;
     }
 
     public Scheduler getSchedulerObserable() {
@@ -144,5 +114,9 @@ public class HttpManager {
     public HttpManager setSchedulerObserable(Scheduler schedulerObserable) {
         this.schedulerObserable = schedulerObserable;
         return this;
+    }
+
+    public ApiService getApiService() {
+        return mApiService;
     }
 }
