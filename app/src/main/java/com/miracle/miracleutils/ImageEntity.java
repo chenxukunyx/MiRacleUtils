@@ -1,4 +1,4 @@
-package com.miracle.app;
+package com.miracle.miracleutils;
 
 import java.util.List;
 

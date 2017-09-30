@@ -44,6 +44,8 @@ dependencies {
 
     compile 'com.orhanobut:logger:2.1.1'
 
+    compile 'com.github.chrisbanes:PhotoView:2.0.0'
+
 
 //    // LeanCloud 基础包
 //    compile ('cn.leancloud.android:avoscloud-sdk:v4.4.4')

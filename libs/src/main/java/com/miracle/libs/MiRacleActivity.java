@@ -2,6 +2,7 @@ package com.miracle.libs;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ import okhttp3.ResponseBody;
  * @time: 12:04
  * @age: 24
  */
-public class MiRacleActivity extends Activity implements View.OnClickListener{
+public class MiRacleActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = "MiRacleActivity";
 
