@@ -33,12 +33,16 @@ public class DefaultObserver<T> implements Observer<T>{
     @Override
     public void onSubscribe(Disposable d) {
         this.mDisposable = d;
+        if (mOnResultListener != null) {
+            mOnResultListener.loading(true);
+        }
     }
 
     @Override
     public void onNext(T value) {
         if (mOnResultListener != null) {
             mOnResultListener.onSuccess(value);
+            mOnResultListener.loading(false);
         }
     }
 

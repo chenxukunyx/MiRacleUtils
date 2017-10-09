@@ -13,7 +13,7 @@ import android.util.Log;
  */
 public class MLog {
 
-    private static final String TAG = "MLog----->>";
+    private static final String TAG = "MLog";
 
     public static void v(Object msg) {
         v(null, msg);

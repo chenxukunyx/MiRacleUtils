@@ -10,6 +10,7 @@ package com.miracle.libhttp.net;
  * @age: 24
  */
 public interface OnResultCallback<T> {
+    void loading(boolean b);
     void onSuccess(T t);
     void onError(int code, String msg);
 }
