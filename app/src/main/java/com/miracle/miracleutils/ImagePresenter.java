@@ -1,12 +1,9 @@
 package com.miracle.miracleutils;
 
-import android.content.Intent;
-
 import com.miracle.libhttp.TestEntity;
 import com.miracle.libhttp.net.DefaultObserver;
 import com.miracle.libhttp.net.HttpFactory;
-import com.miracle.libhttp.net.OnResultCallback;
-import com.miracle.libs.utils.MLog;
+import com.miracle.libhttp.callback.OnResultCallback;
 
 /**
  * Create with Android studio

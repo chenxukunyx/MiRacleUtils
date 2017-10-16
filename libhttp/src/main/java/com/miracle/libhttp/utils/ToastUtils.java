@@ -1,13 +1,10 @@
-package com.miracle.libs.utils;
+package com.miracle.libhttp.utils;
 
 import android.content.Context;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.miracle.libs.R;
+import com.miracle.libhttp.net.HttpFactory;
 
 /**
  * Created with Android Studio
@@ -21,6 +18,23 @@ import com.miracle.libs.R;
 public class ToastUtils {
 
     private static int duration = 200;
+    private Context mContext;
+    private static ToastUtils toastUtils;
+
+    public static ToastUtils getInsance() {
+        if (toastUtils == null) {
+            synchronized (ToastUtils.class) {
+                if (toastUtils == null) {
+                    toastUtils = new ToastUtils();
+                }
+            }
+        }
+        return toastUtils;
+    }
+
+    public void show(String msg) {
+        ToastShortCenter(HttpFactory.getmContext(), msg);
+    }
 
 
     /**

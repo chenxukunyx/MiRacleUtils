@@ -7,10 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.miracle.libhttp.TestEntity;
-import com.miracle.libhttp.net.DefaultObserver;
-import com.miracle.libhttp.net.HttpFactory;
-import com.miracle.libhttp.net.OnResultCallback;
-import com.miracle.libs.utils.FileUtils;
+import com.miracle.libhttp.utils.ToastUtils;
 import com.miracle.libs.utils.MLog;
 
 
@@ -36,11 +33,6 @@ public class MainActivity extends AppCompatActivity implements IGetImageView<Tes
         setContentView(R.layout.activity_main);
         imagePresenter = new ImagePresenter();
         init();
-        MLog.i(TAG, FileUtils.getSdCardAbsolutePath());
-        MLog.i(TAG, FileUtils.getSdCardIsEnable());
-        MLog.i(TAG, FileUtils.formatFileSize(FileUtils.getSdCardEnableSize()));
-        MLog.i(TAG, FileUtils.getSdCardPath());
-        MLog.i(TAG, FileUtils.formatFileSize(FileUtils.getSdCardSize()));
     }
 
     private void init() {
@@ -59,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements IGetImageView<Tes
         imageViewAdapter.setOnItemClickListener(new ImageViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(final String url) {
-//              ToastUtils.show(getApplicationContext(), url);
+                ToastUtils.getInsance().show(url);
                 Intent intent = new Intent(MainActivity.this, ImageDetailActivity.class);
                 intent.putExtra("url", url);
                 startActivity(intent);
@@ -72,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements IGetImageView<Tes
 
     @Override
     public void failure(int code, String msg) {
-
+        ToastUtils.getInsance().show(code + " : " + msg);
     }
 
     @Override

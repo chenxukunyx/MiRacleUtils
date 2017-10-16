@@ -17,6 +17,11 @@ import java.util.Map;
 public class HttpFactory {
 
     static HttpManager httpManager;
+
+    public static Context getmContext() {
+        return mContext;
+    }
+
     private static Context mContext;
 
     public static HttpManager getHttpManager() {

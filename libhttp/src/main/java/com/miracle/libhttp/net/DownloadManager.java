@@ -3,6 +3,8 @@ package com.miracle.libhttp.net;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+
+import com.miracle.libhttp.callback.Callback;
 import com.miracle.libhttp.utils.MLog;
 import java.io.File;
 import java.io.FileOutputStream;

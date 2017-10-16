@@ -3,6 +3,8 @@ package com.miracle.libhttp.net;
 
 import android.util.MalformedJsonException;
 
+import com.miracle.libhttp.callback.OnResultCallback;
+
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -73,6 +75,7 @@ public class DefaultObserver<T> implements Observer<T>{
                 code = ApiException.Code_Default;
                 mOnResultListener.onError(code, msg);
             }
+            mOnResultListener.loading(false);
         }
     }
 
