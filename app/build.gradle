@@ -43,18 +43,20 @@ android {
         exclude 'META-INF/rxandroid.properties'
         exclude 'META-INF/okio.properties'
     }
-
-    android.applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            output.outputFile = new File(output.outputFile.parent, rootProject.getName()
-                    + "-" + buildType.name
-                    + "-" + releaseTime()
-                    + "-v" + defaultConfig.versionName
-//                    + "-" + defaultConfig.versionCode
-                    + ".apk");
-        }
-    }
 }
+
+
+//    android.applicationVariants.all { variant ->
+//        variant.outputs.each { output ->
+//            output.outputFile = new File(output.outputFile.parent, rootProject.getName()
+//                    + "-" + buildType.name
+//                    + "-" + releaseTime()
+//                    + "-v" + defaultConfig.versionName
+////                    + "-" + defaultConfig.versionCode
+//                    + ".apk");
+//        }
+//    }
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
